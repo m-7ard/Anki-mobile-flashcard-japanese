@@ -1,0 +1,228 @@
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
+</head>
+<div class="card">
+    <div class="card__content">
+        <!-- 
+            HEADER 
+        -->
+        <div class="card__header">
+            <div class="card__audio right">
+                <div class="icon icon--tiny">
+                    ➤➤
+                </div>
+                {{ Audio-1 }}
+            </div>
+            <div class="card__audio">
+                <div class="icon icon--tiny">
+                    ➤➤
+                </div>
+                {{ Audio-2 }}
+            </div>
+        </div>   
+        <!-- 
+            BODY 
+        -->
+        <div class="card__expression text text__light--primary" data-lang="JP" data-randomize>
+            {{ Expression }}
+        </div>
+        <div class="field" data-randomize>
+            <div class="field__header">
+                <div class="field__switch field__switch--selected" data-lang="EN" onclick="switchField(event)">
+                    EN
+                </div>
+                <div class="field__switch" data-lang="JP" onclick="switchField(event)">
+                    JP
+                </div>
+            </div>
+            <div class="wrapper--grow">
+                <div class="field__content field__content--column" data-lang="EN">
+                    <div class="text text--medium text__light--primary" data-field="meaning"></div>
+                    <div class="text text--medium text__light--primary" data-field="meaning"></div>
+                </div>
+                <div class="field__content field__content--hidden" data-lang="JP" lang="ja">
+                    <div class="text text--large text__light--primary">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field" data-randomize>
+            <div class="field__header">
+                <div class="field__switch" data-lang="EN" onclick="switchField(event)">
+                    EN
+                </div>
+                <div class="field__switch" data-lang="JP" onclick="switchField(event)">
+                    JP
+                </div>
+                <div class="field__switch field__switch--selected" data-lang="JP:ANY" onclick="switchField(event)">
+                    JP:ANY
+                </div>
+                <div class="field__switch" data-lang="JP:FRG" onclick="switchField(event)">
+                    JP:FRG
+                </div>
+            </div>
+            <div class="wrapper--grow">
+                <div class="field__content field__content--hidden" data-lang="EN">
+                    <div class="text text--medium text__light--primary">
+
+                    </div>
+                </div>
+                <div class="field__content field__content--hidden" data-lang="JP" lang="ja">
+                    <div class="text text--large text__light--primary">
+                        {{ InContext }}
+                    </div>
+                </div>
+                <div class="field__content" data-lang="JP:ANY" lang="ja">
+                    <div class="text text--large text__light--primary">
+                        <!--
+                            Requires the following addon: 
+                            https://ankiweb.net/shared/info/385420176 
+
+                            To use Tatoeba sentences with the add-on:
+                            1. Download the sentences file for your target language from https://tatoeba.org/en/downloads
+                            2. Unzip the file to get the .tsv file.
+                            3. Copy the .tsv file to this folder.
+                        -->
+                        {{incontext lang=ja provider=tatoeba:Expression}}
+                    </div>
+                </div>
+                <div class="field__content field__content--hidden" data-lang="JP:FRG" lang="ja">
+                    <div class="text text--large text__light--primary">
+                        {{ furigana:InContextReading }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 
+        FOOTER / SEARCH 
+    -->
+    <div class="footer">
+        <div class="footer__trigger" onclick="toggleFooter(event)"></div>
+        <div class="wrapper--grow">
+            <div class="footer__content">
+                <div class="footer__search">
+                    <div class="footer__button" onclick="jishoSearch(event)">
+                        Search
+                    </div>
+                    <div class="wrapper--grow">
+                        <input class="footer__input">
+                    </div>
+                </div>
+                <div class="wrapper--grow">
+                    <div class="definitions">
+                        <div class="definitions__header">
+                            <div class="definitions__word text text--medium text__light--primary" lang="ja">
+                                
+                            </div>
+                            <div class="definitions__reading text text--medium text__light--primary" lang="ja">
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+var SCRAPER_API_KEY = 'insert api key here';
+
+var switchField = function(event) {
+    let eventSwitch = event.target.closest('.field__switch');
+    if (eventSwitch.classList.contains('field__switch--selected')) { 
+        return
+    };
+
+    let lang = eventSwitch.dataset.lang;
+    let field = event.target.closest('.field');
+
+    field.querySelectorAll('.field__switch').forEach((element) => {
+        if (element == eventSwitch) {
+            element.classList.add('field__switch--selected');
+        } else {
+            element.classList.remove('field__switch--selected');
+        };
+    });
+
+    field.querySelectorAll('.field__content').forEach((element) => {
+        if (element.dataset.lang == lang) {
+            element.classList.remove('field__content--hidden');
+        } else {
+            element.classList.add('field__content--hidden');
+        };
+    });
+};
+
+var toggleFooter = function(event) {
+    let footer = event.target.closest('.footer');
+    footer.classList.toggle('footer--active');
+};
+
+var jishoSearch = async function(event) {
+    // DOM Elements
+    let definitions = document.querySelector('.definitions');
+    let input = document.querySelector('.footer__input');
+    let definitionWord = document.querySelector('.definitions__word');
+    let definitionReading = document.querySelector('.definitions__reading');
+
+    // Fetch Data
+    let url = 'http://jisho.org/api/v1/search/words?keyword=' + input.value;
+    let response;
+    let data;
+    try {
+        response = await fetch(`http://api.scraperapi.com?api_key=${SCRAPER_API_KEY}&url=${encodeURI(url)}`);
+        data = await response.json();
+    } 
+    catch (error) {
+        definitionWord.innerText = error;
+    };
+    let firstResult = data.data[0];
+
+    // Use Fetch Data
+    document.querySelectorAll('.definitions__meaning').forEach((meaning) => meaning.remove());
+    definitionWord.innerText = firstResult.japanese[0].word || 'No Kanji';
+    definitionReading.innerText = firstResult.japanese[0].reading;
+    firstResult.senses.forEach((sense) => {
+        let meaningElement = document.createElement('div');
+        meaningElement.classList.add('definitions__meaning');
+        meaningElement.classList.add('text');
+        meaningElement.classList.add('text--medium');
+        meaningElement.classList.add('text__light--primary');
+        meaningElement.innerText = sense.english_definitions.join(', ');
+        definitions.appendChild(meaningElement);
+    });
+};
+
+var shuffle = function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+};
+
+var randomizeFields = document.querySelectorAll('[data-randomize]');
+// Array => [0, 1, 2, 3...]
+var orders = shuffle(Array.from(randomizeFields, (_, i) => i));
+randomizeFields.forEach((field) => {
+        field.style.order = orders.pop();
+});
+
+</script>

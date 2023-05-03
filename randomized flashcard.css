@@ -1,0 +1,148 @@
+.night_mode * {
+  filter: none;
+}
+
+*:not(ruby):hover::-webkit-scrollbar-thumb {
+  background-color: hsla(112, 6%, 25%, 0.516);
+}
+
+*:not(ruby)::-webkit-scrollbar {
+  background: transparent;
+  width: 5px;
+  height: 5px;
+}
+
+*:not(ruby)::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #403D39;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: auto repeat(3, minmax(0, 1fr));
+  background-color: #403D39;
+}
+.card__expression {
+  font-size: 5rem;
+}
+.card__phonetics svg circle {
+  fill: #e0dbd1 !important;
+}
+.card__phonetics svg path {
+  stroke: #403D39 !important;
+}
+.card__phonetics svg circle:last-of-type {
+  fill: #403D39 !important;
+}
+.card__phonetics text {
+  fill: #8D8A84 !important;
+  font-weight: normal !important;
+}
+.card__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1.5rem;
+  gap: 1px;
+  background-color: #e0dbd1;
+}
+.card__audio {
+  position: relative;
+  background-color: #11450C;
+  color: #8D8A84;
+  transition: background-color 0.2s;
+  overflow: hidden;
+}
+.card__audio:hover {
+  color: #e0dbd1;
+  background-color: #158308;
+}
+.card__audio *:not(.icon) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.field {
+  background-color: #212120;
+  overflow: overlay;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+.field--centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.field > *:nth-of-type(n + 2) {
+  margin-top: 1rem;
+}
+
+.text--bold {
+  font-weight: bold;
+}
+.text--small {
+  font-size: 1rem;
+}
+.text--medium {
+  font-size: 2rem;
+}
+.text--large {
+  font-size: 2.25rem;
+}
+.text__light--primary {
+  color: #e0dbd1;
+}
+.text__light--secondary {
+  color: #8D8A84;
+}
+[data-order="1"] {
+  order: 1;
+}
+
+[data-order="2"] {
+  order: 2;
+}
+
+[data-order="3"] {
+  order: 3;
+}
+
+[data-order="4"] {
+  order: 4;
+}
+
+[data-order="5"] {
+  order: 5;
+}
+
+[data-order="6"] {
+  order: 6;
+}
+
+[data-order="7"] {
+  order: 7;
+}
+
+[data-order="8"] {
+  order: 8;
+}
+
+[data-order="9"] {
+  order: 9;
+}/*# sourceMappingURL=randomized flashcard.css.map */
