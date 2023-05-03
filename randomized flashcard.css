@@ -110,39 +110,4 @@ body {
 }
 .text__light--secondary {
   color: #8D8A84;
-}
-[data-order="1"] {
-  order: 1;
-}
-
-[data-order="2"] {
-  order: 2;
-}
-
-[data-order="3"] {
-  order: 3;
-}
-
-[data-order="4"] {
-  order: 4;
-}
-
-[data-order="5"] {
-  order: 5;
-}
-
-[data-order="6"] {
-  order: 6;
-}
-
-[data-order="7"] {
-  order: 7;
-}
-
-[data-order="8"] {
-  order: 8;
-}
-
-[data-order="9"] {
-  order: 9;
 }/*# sourceMappingURL=randomized flashcard.css.map */
